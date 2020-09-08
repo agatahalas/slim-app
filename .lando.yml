@@ -1,0 +1,4 @@
+name: slim-app
+recipe: lamp
+config:
+  webroot: public
