@@ -1,8 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Actions\User\ListIconsAction;
-use App\Application\Actions\User\ViewIconAction;
+use App\Application\Actions\Icon\ListIconsAction;
+use App\Application\Actions\User\ListUsersAction;
+use App\Application\Actions\Icon\ViewIconAction;
+use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -20,7 +22,12 @@ return function (App $app) {
     });
 
     $app->group('/users', function (Group $group) {
-        $group->get('', ListIconsAction::class);
-        $group->get('/{id}', ViewIconAction::class);
+        $group->get('', ListUsersAction::class);
+        $group->get('/{id}', ViewUserAction::class);
     });
+
+  $app->group('/icons', function (Group $group) {
+    $group->get('', ListIconsAction::class);
+    $group->get('/{id}', ViewIconAction::class);
+  });
 };
