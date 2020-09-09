@@ -73,4 +73,18 @@ class Category
         $this->name = $name;
     }
 
+  /**
+   * Get array with category's data.
+   *
+   * @return array
+   */
+    public function getArrayCategory() {
+        $category = [
+          'id' => $this->getId(),
+          'machine_name' => $this->getMachineName(),
+          'name' => $this->getName(),
+        ];
+        return $category;
+   }
+
 }

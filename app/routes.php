@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Actions\Icon\ListIconsAction;
 use App\Application\Actions\User\ListUsersAction;
-use App\Application\Actions\Icon\ViewIconAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -29,5 +27,10 @@ return function (App $app) {
     $app->group('/api/icons', function (Group $group) {
       $group->get('', 'App\Application\Actions\Icon\IconAction:fetch');
       $group->get('/{id}', 'App\Application\Actions\Icon\IconAction:fetchOne');
+    });
+
+    $app->group('/api/categories', function (Group $group) {
+      $group->get('', 'App\Application\Actions\Category\CategoryAction:fetch');
+      $group->get('/{id}', 'App\Application\Actions\Category\CategoryAction:fetchOne');
     });
 };

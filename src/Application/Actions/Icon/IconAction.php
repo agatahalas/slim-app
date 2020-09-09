@@ -3,6 +3,7 @@
 namespace App\Application\Actions\Icon;
 
 use Doctrine\ORM\EntityManager;
+use Slim\Exception\HttpNotFoundException;
 
 class IconAction
 {
@@ -37,6 +38,6 @@ class IconAction
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
-        return $response->withStatus(404, 'No photo found with slug ' . $args['id']);
+        throw new HttpNotFoundException($request, 'No icon found with id ' . $args['id']);
     }
 }
