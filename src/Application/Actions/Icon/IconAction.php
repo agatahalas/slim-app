@@ -30,9 +30,7 @@ class IconAction
 
     public function fetchOne($request, $response, $args)
     {
-        //dd($args);
         $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
-        //dd($icon);
         $icon = reset($icon);
         if ($icon) {
             $payload = json_encode($icon->getArrayIcon());
