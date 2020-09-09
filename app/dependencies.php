@@ -24,5 +24,23 @@ return function (ContainerBuilder $containerBuilder) {
 
             return $logger;
         },
+    ],
+    [
+        'entity_manager' => function (ContainerInterface $c) {
+            $settings = $c->get('settings');
+            $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+                $settings['doctrine']['meta']['entity_path'],
+                $settings['doctrine']['meta']['auto_generate_proxies'],
+                $settings['doctrine']['meta']['proxy_dir'],
+                $settings['doctrine']['meta']['cache'],
+                false
+            );
+            return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
+        }
+    ],
+    [
+        'App\Application\Actions\Icon\IconAction' => function ($c) {
+            return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'));
+        }
     ]);
 };

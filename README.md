@@ -40,3 +40,13 @@ composer test
 ```
 
 That's it! Now go build something cool.
+
+## Migration
+### Migrate tables:
+php vendor/bin/doctrine orm:schema-tool:create
+
+### Migrate data:
+ - Categories
+ php migrations/CategoriesMigration.php
+ - Icons
+ php migrations/IconsMigration.php
