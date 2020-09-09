@@ -87,7 +87,7 @@ class Icon
      *
      * @ORM\return string
      */
-     public function getStatus() {
+    public function getStatus() {
         return $this->status;
     }
 
@@ -112,6 +112,17 @@ class Icon
      */
     public function setSrc($src) {
         $this->src = $src;
+    }
+
+    public function getArrayIcon() {
+        $icon = [
+          'id' => $this->getId(),
+          'name' => $this->getName(),
+          'category' => $this->getCategory()->getId(),
+          'status' => $this->getStatus(),
+          'src' => stream_get_contents($this->getSrc()),
+        ];
+        return $icon;
     }
 
 }

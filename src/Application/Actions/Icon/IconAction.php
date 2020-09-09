@@ -1,26 +1,44 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Application\Actions\Icon;
 
-use App\Application\Actions\Action;
-use App\Domain\Icon\IconRepository;
-use Psr\Log\LoggerInterface;
+use Doctrine\ORM\EntityManager;
 
-abstract class IconAction extends Action
+class IconAction
 {
-    /**
-     * @var IconRepository
-     */
-    protected $iconRepository;
+    private $em;
 
-    /**
-     * @param LoggerInterface $logger
-     * @param IconRepository  $iconRepository
-     */
-    public function __construct(LoggerInterface $logger, IconRepository $iconRepository)
+    public function __construct(EntityManager $em)
     {
-        parent::__construct($logger);
-        $this->iconRepository = $iconRepository;
+        $this->em = $em;
+    }
+
+    public function fetch($request, $response, $args)
+    {
+        $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
+
+        $array_icons = [];
+        foreach ($icons as $icon) {
+            $array_icons[] = $icon->getArrayIcon();
+        }
+
+        $payload = json_encode($array_icons);
+
+        $response->getBody()->write($payload);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function fetchOne($request, $response, $args)
+    {
+        //dd($args);
+        $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
+        //dd($icon);
+        $icon = reset($icon);
+        if ($icon) {
+            $payload = json_encode($icon->getArrayIcon());
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+        return $response->withStatus(404, 'No photo found with slug ' . $args['id']);
     }
 }

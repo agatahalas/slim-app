@@ -26,8 +26,8 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
-  $app->group('/icons', function (Group $group) {
-    $group->get('', ListIconsAction::class);
-    $group->get('/{id}', ViewIconAction::class);
-  });
+    $app->group('/api/icons', function (Group $group) {
+      $group->get('', 'App\Application\Actions\Icon\IconAction:fetch');
+      $group->get('/{id}', 'App\Application\Actions\Icon\IconAction:fetchOne');
+    });
 };
