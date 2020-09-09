@@ -32,5 +32,6 @@ return function (App $app) {
     $app->group('/api/categories', function (Group $group) {
       $group->get('', 'App\Application\Actions\Category\CategoryAction:fetch');
       $group->get('/{id}', 'App\Application\Actions\Category\CategoryAction:fetchOne');
+      $group->post('','App\Application\Actions\Category\CategoryAction:create');
     });
 };
