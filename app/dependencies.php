@@ -39,8 +39,13 @@ return function (ContainerBuilder $containerBuilder) {
         }
     ],
     [
+        'icon' => function (ContainerInterface $c) {
+            return new App\Entity\Icon();
+        }
+    ],
+    [
         'App\Application\Actions\Icon\IconAction' => function ($c) {
-            return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'));
+            return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'));
         }
     ]);
 };
