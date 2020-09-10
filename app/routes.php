@@ -40,5 +40,7 @@ return function (App $app) {
       $group->get('', 'App\Application\Actions\Category\CategoryAction:fetch');
       $group->get('/{id}', 'App\Application\Actions\Category\CategoryAction:fetchOne');
       $group->post('','App\Application\Actions\Category\CategoryAction:create');
+      $group->put('/{id}','App\Application\Actions\Category\CategoryAction:update');
+      $group->delete('/{id}','App\Application\Actions\Category\CategoryAction:delete');
     });
 };

@@ -41,16 +41,17 @@ return function (ContainerBuilder $containerBuilder) {
     [
         'icon' => function (ContainerInterface $c) {
             return new App\Entity\Icon();
+        },
+        'category' => function (ContainerInterface $c) {
+          return new App\Entity\Category();
         }
     ],
     [
         'App\Application\Actions\Icon\IconAction' => function ($c) {
             return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'));
-        }
-    ],
-    [
+        },
         'App\Application\Actions\Category\CategoryAction' => function ($c) {
-          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'));
+          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'));
         }
     ]);
 };
