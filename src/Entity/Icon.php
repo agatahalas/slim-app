@@ -114,6 +114,11 @@ class Icon
         $this->src = $src;
     }
 
+  /**
+   * Get array with icon's data.
+   *
+   * @return array
+   */
     public function getArrayIcon() {
         $icon = [
           'id' => $this->getId(),

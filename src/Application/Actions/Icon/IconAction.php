@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManager;
 use App\Entity\Icon;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Exception\HttpNotFoundException;
 
 class IconAction
 {
@@ -39,7 +40,7 @@ class IconAction
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
-        return $response->withStatus(404, 'No photo found with slug ' . $args['id']);
+        throw new HttpNotFoundException($request, 'No icon found with id ' . $args['id']);
     }
 
     public function create(Request $request, Response $response) {
