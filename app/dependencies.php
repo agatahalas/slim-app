@@ -44,7 +44,7 @@ return function (ContainerBuilder $containerBuilder) {
     ],
     [
         'view' => function (ContainerInterface $c) {
-            return Twig::create('../templates', ['cache' => 'cache']);
+            return Twig::create('../templates', ['cache' => '../cache']);
         }
     ],
     [
