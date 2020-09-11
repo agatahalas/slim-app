@@ -30,7 +30,7 @@ class Icon
     protected $category;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="boolean", options={"default":"0"})
      */
      protected $status;
 
