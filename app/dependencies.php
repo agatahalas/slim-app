@@ -36,7 +36,10 @@ return function (ContainerBuilder $containerBuilder) {
                 false
             );
             return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
-        }
+        },
+        'validator' => function (ContainerInterface $c) {
+            return Respect\Validation\Validator::create();
+        },
     ],
     [
         'icon' => function (ContainerInterface $c) {
@@ -51,7 +54,7 @@ return function (ContainerBuilder $containerBuilder) {
             return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'));
         },
         'App\Application\Actions\Category\CategoryAction' => function ($c) {
-          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'));
+          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'));
         }
     ]);
 };
