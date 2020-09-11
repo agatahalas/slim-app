@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Respect\Validation\Validator;
 use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
+use Slim\Views\Twig;
 
 class CategoryAction
 {
@@ -18,11 +19,13 @@ class CategoryAction
     private $validator;
     private $numberValidator;
     private $stringValidator;
+    private $view;
 
-    public function __construct(EntityManager $em, Category $category, Validator $validator) {
+    public function __construct(EntityManager $em, Category $category, Validator $validator, Twig $view) {
         $this->em = $em;
         $this->category = $category;
         $this->validator = $validator;
+        $this->view = $view;
 
         $this->numberValidator = $this->validator::number();
         $this->stringValidator = $this->validator::stringType()->notEmpty()->length(1, 64);
@@ -41,7 +44,9 @@ class CategoryAction
     }
 
     public function create(Request $request, Response $response) {
-
+        return $this->view->render($response, 'create-category.html', [
+            'name' => 'anything',
+        ]);
     }
 
     public function show(Request $request, Response $response, $args) {

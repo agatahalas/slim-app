@@ -60,7 +60,7 @@ return function (ContainerBuilder $containerBuilder) {
             return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'), $c->get('validator'));
         },
         'App\Application\Actions\Category\CategoryAction' => function ($c) {
-          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'));
+          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'), $c->get('view'));
         },
         'App\Application\Actions\Admin\AdminAction' => function ($c) {
           return new App\Application\Actions\Admin\AdminAction($c->get('view'));

@@ -1,0 +1,13 @@
+
+
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+{% block content %}
+    <h1>Create category</h1>
+    <form action="/api/categories" method="POST">
+      Name: <input type="text" name="name" />
+      Machine name: <input type="text" name="machine_name" />
+      <input type="submit" value="Submit" />
+    </form>
+{% endblock %}

@@ -39,9 +39,9 @@ return function (App $app) {
       $group->get('', 'App\Application\Actions\Category\CategoryAction:index');
       $group->get('/create', 'App\Application\Actions\Category\CategoryAction:create');
       $group->get('/{id}', 'App\Application\Actions\Category\CategoryAction:show');
-      $group->post('','App\Application\Actions\Category\CategoryAction:store');
-      $group->post('/{id}','App\Application\Actions\Category\CategoryAction:update');
-      $group->delete('/{id}','App\Application\Actions\Category\CategoryAction:delete');
+      $group->post('', 'App\Application\Actions\Category\CategoryAction:store');
+      $group->post('/{id}', 'App\Application\Actions\Category\CategoryAction:update');
+      $group->delete('/{id}', 'App\Application\Actions\Category\CategoryAction:delete');
     });
 
     $app->group('/admin', function (Group $group) {
