@@ -125,7 +125,7 @@ class Icon
           'name' => $this->getName(),
           'category' => $this->getCategory()->getId(),
           'status' => $this->getStatus(),
-          'src' => stream_get_contents($this->getSrc()),
+          'src' => is_resource($this->getSrc()) ? stream_get_contents($this->getSrc()) : $this->getSrc(),
         ];
         return $icon;
     }

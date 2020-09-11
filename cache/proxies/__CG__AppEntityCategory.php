@@ -235,4 +235,15 @@ class Category extends \App\Entity\Category implements \Doctrine\ORM\Proxy\Proxy
         return parent::setName($name);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    public function getArrayCategory()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getArrayCategory', []);
+
+        return parent::getArrayCategory();
+    }
+
 }

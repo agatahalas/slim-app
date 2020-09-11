@@ -28,12 +28,11 @@ return function (App $app) {
       $group->get('', 'App\Application\Actions\Icon\IconAction:index');
       $group->get('/create', 'App\Application\Actions\Icon\IconAction:create');
       $group->get('/{id}', 'App\Application\Actions\Icon\IconAction:show');
-      
-    //   $group->post('/', 'App\Application\Actions\Icon\IconAction:store');
-    //   $group->get('/{$id}/edit', 'App\Application\Actions\Icon\IconAction:update');
-    //   $group->put('/{$id}', 'App\Application\Actions\Icon\IconAction:update');
-    //   $group->get('/{$id}/delete', 'App\Application\Actions\Icon\IconAction:delete');
-    //   $group->delete('/{$id}', 'App\Application\Actions\Icon\IconAction:delete');
+      $group->post('', 'App\Application\Actions\Icon\IconAction:store');
+      // $group->get('/{$id}/edit', 'App\Application\Actions\Icon\IconAction:update');
+      $group->post('/{id}', 'App\Application\Actions\Icon\IconAction:update');
+      // $group->get('/{$id}/delete', 'App\Application\Actions\Icon\IconAction:delete');
+      $group->delete('/{id}', 'App\Application\Actions\Icon\IconAction:delete');
     });
 
     $app->group('/api/categories', function (Group $group) {
