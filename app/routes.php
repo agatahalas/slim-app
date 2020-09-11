@@ -42,4 +42,9 @@ return function (App $app) {
       $group->put('/{id}','App\Application\Actions\Category\CategoryAction:update');
       $group->delete('/{id}','App\Application\Actions\Category\CategoryAction:delete');
     });
+
+    $app->group('/admin', function (Group $group) {
+      $group->get('', 'App\Application\Actions\Admin\AdminAction:login');
+      $group->get('/login-from-template', 'App\Application\Actions\Admin\AdminAction:loginFromTemplate');
+    });
 };

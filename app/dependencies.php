@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Views\Twig;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -39,6 +40,11 @@ return function (ContainerBuilder $containerBuilder) {
         }
     ],
     [
+        'view' => function (ContainerInterface $c) {
+            return Twig::create('../templates', ['cache' => 'cache']);
+        }
+    ],
+    [
         'icon' => function (ContainerInterface $c) {
             return new App\Entity\Icon();
         },
@@ -52,6 +58,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         'App\Application\Actions\Category\CategoryAction' => function ($c) {
           return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'));
+        },
+        'App\Application\Actions\Admin\AdminAction' => function ($c) {
+            return new App\Application\Actions\Admin\AdminAction($c->get('view'));
         }
     ]);
 };
