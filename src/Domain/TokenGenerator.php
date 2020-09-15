@@ -38,9 +38,11 @@ class TokenGenerator
         $secret = $this->settings['JWTauth']['secret'];
         $token = JWT::encode($payload, $secret, "HS256");
 
-        $data["token"] = $token;
-        $data["expires"] = $future->getTimeStamp();
+        $data['token'] = $token;
+        $data['expires'] = $future->getTimeStamp();
         $response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-        return $response->withStatus(201)->withHeader("Content-Type", "application/json");
+
+        return $response->withStatus(200)->withHeader("Content-Type", "application/json");
+
     }
 }

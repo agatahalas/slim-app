@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+    {% if logged_in %}
+        <h1>Logged in</h1>
+        Logged in
+    {% else %}
+        You've been logged out. Go back to login<a href="/admin">login</a> or <a href="/">homepage</a>.
+    {% endif %}
+{% endblock %}

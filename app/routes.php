@@ -24,6 +24,7 @@ return function (App $app) {
     });
 
     $app->post('/token', 'App\Domain\TokenGenerator:getToken');
+    
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
@@ -50,6 +51,6 @@ return function (App $app) {
 
     $app->group('/admin', function (Group $group) {
         $group->get('', 'App\Application\Actions\Admin\AdminAction:login');
-        $group->get('/login-from-template', 'App\Application\Actions\Admin\AdminAction:loginFromTemplate');
+        $group->get('/logout', 'App\Application\Actions\Admin\AdminAction:logout');
     });
 };
