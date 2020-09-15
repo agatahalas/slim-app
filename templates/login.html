@@ -24,6 +24,10 @@
     {% if logged_in %}
         <h1>Logged in</h1>
         Logged in
+        <ul>
+            <li><a href="/api/categories/create">Add category</a></li>
+            <li><a href="/api/icons/create">Add icon</a></li>
+        </ul>
     {% else %}
         <h1>Login</h1>
         <div id="error_msg" style="color: red"></div>
