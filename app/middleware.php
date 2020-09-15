@@ -21,15 +21,12 @@ return function (App $app) {
             "error" => function ($response, $arguments) {
                 return $response->withStatus(401);
             },
-            "users" => [
-                "test" => "test"
-            ]
+            "users" => $app->getContainer()->get('settings')['JWTauth']['users']
         ])
     );
 
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "path" => "/api",
-        "ignore" => ["/api/", "/info"],
         "secret" => $app->getContainer()->get('settings')['JWTauth']['secret'],
         "attribute" => false,
         "secure" => false,

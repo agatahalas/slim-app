@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 use DI\ContainerBuilder;
@@ -10,23 +11,24 @@ use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
 
 return function (ContainerBuilder $containerBuilder) {
-    $containerBuilder->addDefinitions([
-        LoggerInterface::class => function (ContainerInterface $c) {
-            $settings = $c->get('settings');
+    $containerBuilder->addDefinitions(
+        [
+            LoggerInterface::class => function (ContainerInterface $c) {
+                $settings = $c->get('settings');
 
-            $loggerSettings = $settings['logger'];
-            $logger = new Logger($loggerSettings['name']);
+                $loggerSettings = $settings['logger'];
+                $logger = new Logger($loggerSettings['name']);
 
-            $processor = new UidProcessor();
-            $logger->pushProcessor($processor);
+                $processor = new UidProcessor();
+                $logger->pushProcessor($processor);
 
-            $handler = new StreamHandler($loggerSettings['path'], $loggerSettings['level']);
-            $logger->pushHandler($handler);
+                $handler = new StreamHandler($loggerSettings['path'], $loggerSettings['level']);
+                $logger->pushHandler($handler);
 
-            return $logger;
-        },
-    ],
-    [
+                return $logger;
+            },
+        ],
+        [
         'entity_manager' => function (ContainerInterface $c) {
             $settings = $c->get('settings');
             $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
@@ -38,37 +40,38 @@ return function (ContainerBuilder $containerBuilder) {
             );
             return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
         },
-        'validator' => function (ContainerInterface $c) {
-            return Respect\Validation\Validator::create();
-        },
-    ],
-    [
-        'view' => function (ContainerInterface $c) {
-            return Twig::create('../templates', ['cache' => '../cache']);
-        }
-    ],
-    [
-        'icon' => function (ContainerInterface $c) {
-            return new App\Entity\Icon();
-        },
-        'category' => function (ContainerInterface $c) {
-          return new App\Entity\Category();
-        }
-    ],
-    [
-        'App\Application\Actions\Icon\IconAction' => function ($c) {
-            return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'), $c->get('validator'));
-        },
-        'App\Application\Actions\Category\CategoryAction' => function ($c) {
-          return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'), $c->get('view'));
-        },
-        'App\Application\Actions\Admin\AdminAction' => function ($c) {
-          return new App\Application\Actions\Admin\AdminAction($c->get('view'));
-        }
-    ],
-    [
-        'App\Domain\TokenGenerator' => function($c) {
-            return new App\Domain\TokenGenerator($c->get('settings'));
-        }
-    ]);
+            'validator' => function (ContainerInterface $c) {
+                return Respect\Validation\Validator::create();
+            },
+        ],
+        [
+            'view' => function (ContainerInterface $c) {
+                return Twig::create('../templates', ['cache' => '../cache']);
+            }
+        ],
+        [
+            'icon' => function (ContainerInterface $c) {
+                return new App\Entity\Icon();
+            },
+            'category' => function (ContainerInterface $c) {
+                return new App\Entity\Category();
+            }
+        ],
+        [
+            'App\Application\Actions\Icon\IconAction' => function ($c) {
+                return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'), $c->get('validator'));
+            },
+            'App\Application\Actions\Category\CategoryAction' => function ($c) {
+                return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'), $c->get('view'));
+            },
+            'App\Application\Actions\Admin\AdminAction' => function ($c) {
+                return new App\Application\Actions\Admin\AdminAction($c->get('view'));
+            }
+        ],
+        [
+            'App\Domain\TokenGenerator' => function ($c) {
+                return new App\Domain\TokenGenerator($c->get('settings'));
+            }
+        ]
+    );
 };

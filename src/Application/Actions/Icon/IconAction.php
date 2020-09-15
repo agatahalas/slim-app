@@ -21,7 +21,8 @@ class IconAction
     private $stringValidator;
     private $srcValidator;
 
-    public function __construct(EntityManager $em, Icon $icon, Validator $validator) {
+    public function __construct(EntityManager $em, Icon $icon, Validator $validator)
+    {
         $this->em = $em;
         $this->icon = $icon;
         $this->validator = $validator;
@@ -31,7 +32,8 @@ class IconAction
         $this->srcValidator = $this->validator::stringType()->notEmpty();
     }
 
-    public function index(Request $request, Response $response, $args) {
+    public function index(Request $request, Response $response, $args)
+    {
         $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
 
         $array_icons = [];
@@ -43,7 +45,8 @@ class IconAction
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function show(Request $request, Response $response, $args) {
+    public function show(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -58,15 +61,16 @@ class IconAction
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function create(Request $request, Response $response) {
-
+    public function create(Request $request, Response $response)
+    {
     }
 
-    public function store(Request $request, Response $response) {
+    public function store(Request $request, Response $response)
+    {
         $data = $request->getParsedBody();
 
         if (!$this->stringValidator->validate($data['name'])) {
-          throw new HttpBadRequestException($request, 'Wrong data. Name must be a non-empty string and maximum of 64 characters in length.');
+            throw new HttpBadRequestException($request, 'Wrong data. Name must be a non-empty string and maximum of 64 characters in length.');
         }
         if (!$this->numberValidator->validate($data['category'])) {
             throw new HttpBadRequestException($request, 'Wrong data. Category must be a number.');
@@ -91,10 +95,13 @@ class IconAction
 
         $payload = json_encode($this->icon->getArrayIcon());
         $response->getBody()->write($payload);
-        return $response->withStatus(StatusCodeInterface::STATUS_CREATED)->withHeader('Content-Type', 'application/json');
+        return $response
+            ->withStatus(StatusCodeInterface::STATUS_CREATED)
+            ->withHeader('Content-Type', 'application/json');
     }
 
-    public function update(Request $request, Response $response, $args) {
+    public function update(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -137,7 +144,8 @@ class IconAction
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function delete(Request $request, Response $response, $args) {
+    public function delete(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -154,5 +162,4 @@ class IconAction
         $response->getBody()->write('Icon (id:' . $args['id'] . ') has been removed.');
         return $response->withHeader('Content-Type', 'application/json');
     }
-
 }

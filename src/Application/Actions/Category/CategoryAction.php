@@ -21,7 +21,8 @@ class CategoryAction
     private $stringValidator;
     private $view;
 
-    public function __construct(EntityManager $em, Category $category, Validator $validator, Twig $view) {
+    public function __construct(EntityManager $em, Category $category, Validator $validator, Twig $view)
+    {
         $this->em = $em;
         $this->category = $category;
         $this->validator = $validator;
@@ -31,7 +32,8 @@ class CategoryAction
         $this->stringValidator = $this->validator::stringType()->notEmpty()->length(1, 64);
     }
 
-    public function index(Request $request, Response $response, $args) {
+    public function index(Request $request, Response $response, $args)
+    {
         $categories = $this->em->getRepository('App\Entity\Category')->findAll();
 
         $array_categories = [];
@@ -43,13 +45,16 @@ class CategoryAction
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function create(Request $request, Response $response) {
+    public function create(Request $request, Response $response)
+    {
+        dd($request);
         return $this->view->render($response, 'create-category.html', [
             'name' => 'anything',
         ]);
     }
 
-    public function show(Request $request, Response $response, $args) {
+    public function show(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -65,7 +70,8 @@ class CategoryAction
         return $response->withHeader('Content-Type', 'application/json');
     }
 
-    public function store(Request $request, Response $response, $args) {
+    public function store(Request $request, Response $response, $args)
+    {
         $data = $request->getParsedBody();
 
         if (!$this->stringValidator->validate($data['machine_name']) || !$this->stringValidator->validate($data['name'])) {
@@ -82,7 +88,8 @@ class CategoryAction
         return $response->withStatus(StatusCodeInterface::STATUS_CREATED)->withHeader('Content-Type', 'application/json');
     }
 
-    public function update(Request $request, Response $response, $args) {
+    public function update(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -95,7 +102,7 @@ class CategoryAction
 
         $data = $request->getParsedBody();
 
-        if(!$this->stringValidator->validate($data['machine_name']) || !$this->stringValidator->validate($data['name'])) {
+        if (!$this->stringValidator->validate($data['machine_name']) || !$this->stringValidator->validate($data['name'])) {
             throw new HttpBadRequestException($request, 'Wrong data. Machine name and name must be a non-empty string and maximum of 64 characters in length.');
         }
 
@@ -109,9 +116,10 @@ class CategoryAction
         ];
         $response->getBody()->write(json_encode($payload));
         return $response->withStatus(StatusCodeInterface::STATUS_OK)->withHeader('Content-Type', 'application/json');
-  }
+    }
 
-    public function delete(Request $request, Response $response, $args) {
+    public function delete(Request $request, Response $response, $args)
+    {
         if (!$this->numberValidator->validate($args['id'])) {
             throw new HttpBadRequestException($request, 'The argument must be a number.');
         }
@@ -127,7 +135,5 @@ class CategoryAction
 
         $response->getBody()->write('Category (id:' . $args['id'] . ') has been removed.');
         return $response->withHeader('Content-Type', 'application/json');
-
-  }
-
+    }
 }

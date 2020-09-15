@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain;
@@ -19,43 +20,27 @@ class TokenGenerator
     }
 
     public function getToken(Request $request, Response $response) {
-      //dd($this->settings);
-      $requested_scopes = $request->getParsedBody() ?: [];
+        $requested_scopes = $request->getParsedBody() ?: [];
 
-    //   $valid_scopes = [
-    //       "todo.create",
-    //       "todo.read",
-    //       "todo.update",
-    //       "todo.delete",
-    //       "todo.list",
-    //       "todo.all"
-    //   ];
+        $now = new \DateTime();
+        $future = new \DateTime("now +2 hours");
+        $server = $request->getServerParams();
 
-    //   $scopes = array_filter($requested_scopes, function ($needle) use ($valid_scopes) {
-    //       return in_array($needle, $valid_scopes);
-    //   });
+        $jti = (new Base62())->encode(random_bytes(16));
 
-      $now = new \DateTime();
-      $future = new \DateTime("now +2 hours");
-      $server = $request->getServerParams();
+        $payload = [
+            "iat" => $now->getTimeStamp(),
+            "exp" => $future->getTimeStamp() + 3600,
+            "jti" => $jti,
+            "sub" => $server["PHP_AUTH_USER"],
+        ];
 
-      $jti = (new Base62)->encode(random_bytes(16));
+        $secret = $this->settings['JWTauth']['secret'];
+        $token = JWT::encode($payload, $secret, "HS256");
 
-      $payload = [
-          "iat" => $now->getTimeStamp(),
-          "exp" => $future->getTimeStamp()+3600,
-          "jti" => $jti,
-          "sub" => $server["PHP_AUTH_USER"],
-          //"scope" => $scopes
-      ];
-
-      $secret = $this->settings['JWTauth']['secret'];
-      $token = JWT::encode($payload, $secret, "HS256");
-
-      $data["token"] = $token;
-      $data["expires"] = $future->getTimeStamp();
-      $response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
-      return $response->withStatus(201)->withHeader("Content-Type", "application/json");
-          
+        $data["token"] = $token;
+        $data["expires"] = $future->getTimeStamp();
+        $response->getBody()->write(json_encode($data, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+        return $response->withStatus(201)->withHeader("Content-Type", "application/json");
     }
 }

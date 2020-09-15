@@ -14,9 +14,9 @@ class AdminAction {
     }
 
     public function login(ServerRequestInterface $request, ResponseInterface $response, $args) {
-      return $this->view->render($response, 'login.html', [
-        'name' => 'anything',
-      ]);
+        return $this->view->render($response, 'login.html', [
+          'name' => 'anything',
+        ]);
     }
 
 }
