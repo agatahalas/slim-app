@@ -13,7 +13,7 @@
             }).done(function(res) {
                 document.cookie = "token=" + res.token + "; max-age=" + 3600;
                 $("#error_msg").html("");
-                document.location='http://slim-app.lndo.site/api/categories/create';
+                document.location='http://slim-app.lndo.site/admin';
             }).fail(function(result) {
                 $("#error_msg").html("Error logging in: "+result.statusText);
             });
