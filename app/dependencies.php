@@ -65,5 +65,10 @@ return function (ContainerBuilder $containerBuilder) {
         'App\Application\Actions\Admin\AdminAction' => function ($c) {
           return new App\Application\Actions\Admin\AdminAction($c->get('view'));
         }
+    ],
+    [
+        'App\Domain\TokenGenerator' => function($c) {
+            return new App\Domain\TokenGenerator($c->get('settings'));
+        }
     ]);
 };

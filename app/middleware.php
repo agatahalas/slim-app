@@ -16,7 +16,7 @@ return function (App $app) {
     $app->add(
         new HttpBasicAuthentication([
             "path" => "/token",
-            "relaxed" => ["192.168.50.52", "127.0.0.1", "localhost"],
+            "relaxed" => [],
             "secure" => false,
             "error" => function ($response, $arguments) {
                 return $response->withStatus(401);
@@ -27,18 +27,13 @@ return function (App $app) {
         ])
     );
 
-    // $app->add(
-    //     new Token([])
-    // );
-
     $app->add(new Tuupola\Middleware\JwtAuthentication([
         "path" => "/api",
-        //"ignore" => ["/token", "/info"],
-        "secret" => "mysecrettoken",
-        //"logger" => $container["logger"],
+        "ignore" => ["/api/", "/info"],
+        "secret" => $app->getContainer()->get('settings')['JWTauth']['secret'],
         "attribute" => false,
         "secure" => false,
-        "relaxed" => ["192.168.50.52", "127.0.0.1", "localhost"],
+        "relaxed" => [],
         "error" => function ($response, $arguments) {
             return $response->withStatus(401);
         },
@@ -49,7 +44,6 @@ return function (App $app) {
     ]));
     
     $app->add(new CorsMiddleware([
-        //"logger" => $container["logger"],
         "origin" => ["*"],
         "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
         "headers.allow" => ["Authorization", "If-Match", "If-Unmodified-Since"],
@@ -60,8 +54,4 @@ return function (App $app) {
             return $response->withStatus(405);
         }
     ]));
-
-    // $app->add(new NegotiationMiddleware([
-    //     "accept" => ["application/json"]
-    // ]));
 };

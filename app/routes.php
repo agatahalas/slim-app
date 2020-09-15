@@ -52,7 +52,7 @@ return function (App $app) {
           "scope" => $scopes
       ];
 
-      $secret = 'mysecrettoken';
+      $secret = $this->get('settings')['JWTauth']['secret'];
       $token = JWT::encode($payload, $secret, "HS256");
 
       $data["token"] = $token;
@@ -61,6 +61,8 @@ return function (App $app) {
       return $response->withStatus(201)->withHeader("Content-Type", "application/json");
           
   });
+
+  $app->post('/dupa', 'App\Domain\TokenGenerator:getToken');
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
