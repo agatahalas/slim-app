@@ -2,6 +2,7 @@
 
 namespace App\Application\Actions\Icon;
 
+use App\Application\Actions\Category\CategoryAction;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Icon;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -11,6 +12,7 @@ use Slim\Exception\HttpBadRequestException;
 use Slim\Exception\HttpNotFoundException;
 use App\Entity\Category;
 use Fig\Http\Message\StatusCodeInterface;
+use Slim\Views\Twig;
 
 class IconAction
 {
@@ -20,12 +22,14 @@ class IconAction
     private $numberValidator;
     private $stringValidator;
     private $srcValidator;
+    private $view;
 
-    public function __construct(EntityManager $em, Icon $icon, Validator $validator)
+    public function __construct(EntityManager $em, Icon $icon, Validator $validator, Twig $view)
     {
         $this->em = $em;
         $this->icon = $icon;
         $this->validator = $validator;
+        $this->view = $view;
 
         $this->numberValidator = $this->validator::number();
         $this->stringValidator = $this->validator::stringType()->notEmpty()->length(1, 64);
@@ -63,6 +67,16 @@ class IconAction
 
     public function create(Request $request, Response $response)
     {
+      $categories = $this->em->getRepository('App\Entity\Category')->findAll();
+      $array_categories = [];
+      foreach ($categories as $category) {
+        $array_categories[] = $category->getArrayCategory();
+      }
+
+      return $this->view->render($response, 'create-icon.html', [
+        'name' => 'anything',
+        'categories' => $array_categories,
+      ]);
     }
 
     public function store(Request $request, Response $response)
