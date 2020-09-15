@@ -1,0 +1,27 @@
+{% if isLoggedIn() %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/admin">
+            <img src="/logo.svg" width="100" alt="" loading="lazy">
+        </a>
+        <div class="row col-11">
+            <div class="col-9">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="/api/categories/create">Add category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/api/icons/create">Add icon</a></li>
+                </ul>
+            </div>
+
+            <div class="col-3">
+                <ul class="nav nav-pills justify-content-end">
+                    <li class="nav-item"><a class="nav-link" href="/admin/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% else %}
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/admin">
+            <img src="/logo.svg" width="100" alt="" loading="lazy">
+        </a>
+    </nav>
+{% endif %}
