@@ -47,7 +47,6 @@ class CategoryAction
 
     public function create(Request $request, Response $response)
     {
-        //dd($request);
         return $this->view->render($response, 'create-category.html', [
             'name' => 'anything',
         ]);
