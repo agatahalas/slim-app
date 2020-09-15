@@ -10,15 +10,17 @@
         {% endblock %}
     </head>
     <body>
-        <div id="navigation" class="container">
+        <div id="navigation" class="container mb-5">
             {% include 'navigation.html' %}
         </div>
         <div id="content" class="container">
             {% block content %}{% endblock %}
         </div>
-        <div id="footer" class="container">
+        <div id="footer" class="container mt-5">
             {% block footer %}
-                &copy; Copyright 2020 by CircleK</a>.
+            <div class="bg-light p-3">
+                &copy; Copyright {{ "now"|date("Y") }} by CircleK.
+            </div>
             {% endblock %}
         </div>
     </body>
