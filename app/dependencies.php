@@ -46,8 +46,10 @@ return function (ContainerBuilder $containerBuilder) {
         ],
         [
             'view' => function (ContainerInterface $c) {
-                return Twig::create('../templates', ['cache' => false, 'debug' => true]);
-            }
+                $twig = Twig::create('../templates', ['cache' => false, 'debug' => true]);
+                $twig->addExtension(new \App\Twig\TwigExtension());
+                return $twig;
+            },
         ],
         [
             'icon' => function (ContainerInterface $c) {
@@ -71,7 +73,7 @@ return function (ContainerBuilder $containerBuilder) {
         [
             'App\Domain\TokenGenerator' => function ($c) {
                 return new App\Domain\TokenGenerator($c->get('settings'));
-            }
+            },
         ]
     );
 };
