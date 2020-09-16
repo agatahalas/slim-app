@@ -67,7 +67,7 @@ return function (ContainerBuilder $containerBuilder) {
                 return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'), $c->get('view'));
             },
             'App\Application\Actions\Admin\AdminAction' => function ($c) {
-                return new App\Application\Actions\Admin\AdminAction($c->get('view'));
+                return new App\Application\Actions\Admin\AdminAction($c->get('view'), $c->get('entity_manager'));
             }
         ],
         [

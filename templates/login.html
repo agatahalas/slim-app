@@ -21,17 +21,18 @@
             });
         });
     </script>
+    {{ part }}
     {% if isLoggedIn() %}
         <h3 class="mt-4">Create new:</h3>
 
         <ul class="list-group w-25 list-group-flush">
             <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
               <a href="/api/categories/create" class="text-dark">Category</a>
-              <span class="badge badge-danger badge-pill">2</span>
+              <span class="badge badge-danger badge-pill">{{ number_of_categories }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
                 <a href="/api/icons/create" class="text-dark">Icon</a>
-                <span class="badge badge-danger badge-pill">15</span>
+                <span class="badge badge-danger badge-pill">{{ number_of_icons }}</span>
             </li>
         </ul>
 
