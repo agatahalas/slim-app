@@ -2,9 +2,10 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
+    <h3 class="mt-4">Create icon:</h3>
     <div>
-        <table class="table table-striped table-borderless">
-            <thead class="thead-dark">
+        <table class="table table-striped">
+            <thead>
                 <tr>
                     {% for key, item in data|first %}
                         <th scope="col"> {{ key }}</th>
@@ -15,7 +16,14 @@
                 {% for item in data %}
                     <tr>
                         {% for key, value in item %}
-                            <td>{{ value }}</td>
+                            
+                            <td>
+                                {% if key == 'src' %}
+                                    {{ value | raw }}
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            </td>
                         {% endfor %}
                     </tr>
                 {% endfor %}
