@@ -83,7 +83,7 @@ class IconAction
               'title' => 'Icons',
               'data' => $array_icons,
               'categories' => $array_categories,
-              'param' => $params['category'],
+              'param' => isset($params['category']) ? $params['category'] : null,
             ]);
         }
     }
