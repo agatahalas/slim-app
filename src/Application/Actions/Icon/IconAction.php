@@ -2,7 +2,6 @@
 
 namespace App\Application\Actions\Icon;
 
-use App\Application\Actions\Category\CategoryAction;
 use Doctrine\ORM\EntityManager;
 use App\Entity\Icon;
 use Psr\Http\Message\ResponseInterface as Response;
