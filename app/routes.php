@@ -52,5 +52,7 @@ return function (App $app) {
     $app->group('/admin', function (Group $group) {
         $group->get('', 'App\Application\Actions\Admin\AdminAction:login');
         $group->get('/logout', 'App\Application\Actions\Admin\AdminAction:logout');
+        $group->get('/categories', 'App\Application\Actions\Category\CategoryAction:index');
+        $group->get('/icons', 'App\Application\Actions\Icon\IconAction:index');
     });
 };
