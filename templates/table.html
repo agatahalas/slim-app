@@ -2,7 +2,7 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <h3 class="mt-4">{{ title }}:</h3>
+    <h3 class="mt-4">{{ title }}</h3>
     <div>
         <table class="table table-striped">
             <thead>
@@ -19,7 +19,7 @@
                             
                             <td>
                                 {% if key == 'src' %}
-                                    {{ value | raw }}
+                                <div style="width: 50px">{{ value | raw }}</div>
                                 {% else %}
                                     {{ value }}
                                 {% endif %}
