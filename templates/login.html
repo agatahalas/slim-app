@@ -23,17 +23,30 @@
     </script>
     {% if isLoggedIn() %}
         <h3 class="mt-4">Create new:</h3>
-        <ul class="list-group">
-            <li class="list-group-item"><a href="/api/categories/create">Category</a></li>
-            <li class="list-group-item"><a href="/api/icons/create">Icon</a></li>
+
+        <ul class="list-group w-25 list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+              <a href="/api/categories/create" class="text-dark">Category</a>
+              <span class="badge badge-primary badge-pill">2</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-action">
+                <a href="/api/icons/create" class="text-dark">Icon</a>
+                <span class="badge badge-primary badge-pill">15</span>
+            </li>
         </ul>
+
     {% else %}
-        <h1>Login</h1>
         <div id="error_msg" style="color: red"></div>
-        <form method="POST">
-            Login: <input type="text" name="login" id="login" value="admin" /><br />
-            Password: <input type="password" name="password" id="pass" value="zsZ@aVn6Tq#a\e(" /><br />
-            <input type="Submit" name="Submit" />
+        <form method="POST" class="w-25 p-3 mt-5 mb-5">
+            <div class="form-group">
+                <label for="login">Login</label>
+                <input type="text" class="form-control" id="login" name="login" value="admin"/>
+            </div>
+            <div class="form-group">
+                <label for="pass">Password</label>
+                <input type="password" class="form-control" id="pass" name="pass" value="zsZ@aVn6Tq#a\e("/>
+            </div>
+            <button type="submit" class="btn btn-danger" value="Submit">Log in</button>
         </form>
     {% endif %}
 {% endblock %}
