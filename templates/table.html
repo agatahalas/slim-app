@@ -2,7 +2,34 @@
 
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
+    <script>
+        $(document).ready(function() {
+            $('.set-filter').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.location.search = '?category=' + e.target.value;
+            });
+            $('.reset-filter').click(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.location.search = '';
+            });
+        });
+    </script>
     <h3 class="mt-4">{{ title }}</h3>
+    {% if type == 'icon' %}
+        <div class="mt-4 mb-4">
+            <h5 class="mb-3">Filter icons by category:</h5>
+            {% for item in categories %}
+                {% set active_class = '' %}
+                {% if param == item.machine_name %}
+                   {% set active_class = 'active' %}
+                {% endif %}
+                <button type="button" class="set-filter btn btn-outline-danger {{ active_class }}" value="{{ item.machine_name }}">{{ item.name }}</button>
+            {% endfor %}
+            <button type="button" class="reset-filter btn btn-dark">Reset filter</button>
+        </div>
+    {% endif %}
     <div>
         <table class="table table-striped">
             <thead>

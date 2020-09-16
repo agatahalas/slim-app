@@ -71,9 +71,19 @@ class IconAction
                 $category = reset($category);
                 $array_icons[$icon_key]['category'] = $category->getName();
             }
+
+            $categories = $this->em->getRepository('App\Entity\Category')->findAll();
+            $array_categories = [];
+            foreach ($categories as $category) {
+                $array_categories[] = $category->getArrayCategory();
+            }
+
             return $this->view->render($response, 'table.html', [
+              'type' => 'icon',
               'title' => 'Icons',
-              'data' => $array_icons
+              'data' => $array_icons,
+              'categories' => $array_categories,
+              'param' => $params['category'],
             ]);
         }
     }
