@@ -4,6 +4,7 @@
 {% block content %}
     <script>
         $(document).ready(function() {
+            $("#error_msg").hide();
             $('form').submit(function() {
                 $.ajax({
                     method: "POST",
@@ -15,6 +16,7 @@
                     $("#error_msg").html("");
                     document.location='http://slim-app.lndo.site/admin';
                 }).fail(function(result) {
+                    $("#error_msg").show();
                     $("#error_msg").html("Error logging in: " + result.statusText);
                 });
                 return false;
@@ -37,7 +39,8 @@
         </ul>
 
     {% else %}
-        <div id="error_msg" style="color: red"></div>
+        <div class="alert alert-danger  mt-5" role="alert" id="error_msg">
+        </div>
         <form method="POST" class="w-25 p-3 mt-5 mb-5">
             <div class="form-group">
                 <label for="login">Login</label>

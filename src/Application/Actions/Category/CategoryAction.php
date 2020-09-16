@@ -51,7 +51,7 @@ class CategoryAction
 
         if (isset($path[1]) && $path[1] == 'admin') {
             return $this->view->render($response, 'table.html', [
-              'title' => 'All Categories',
+              'title' => 'Categories',
               'data' => $array_categories
             ]);
         }

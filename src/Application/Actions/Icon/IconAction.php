@@ -54,16 +54,13 @@ class IconAction
         }
 
         if (isset($path[1]) && $path[1] == 'admin') {
-            //dd($array_icons);
-            //$icon = 
             foreach ($array_icons as $icon_key => $icon) {
                 $category = $this->em->getRepository('App\Entity\Category')->findBy(['id' => $icon['category']]);
-                //dd($category);
                 $category = reset($category);
                 $array_icons[$icon_key]['category'] = $category->getName();
             }
             return $this->view->render($response, 'table.html', [
-              'title' => 'All Icons',
+              'title' => 'Icons',
               'data' => $array_icons
             ]);
         }
