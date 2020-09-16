@@ -40,9 +40,21 @@ class CategoryAction
         foreach ($categories as $category) {
             $array_categories[] = $category->getArrayCategory();
         }
-        $payload = json_encode($array_categories);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
+
+        $path = explode('/', $request->getUri()->getPath());
+
+        if (isset($path[1]) && $path[1] == 'api') {
+            $payload = json_encode($array_categories);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        if (isset($path[1]) && $path[1] == 'admin') {
+            return $this->view->render($response, 'table.html', [
+              'title' => 'All Categories',
+              'data' => $array_categories
+            ]);
+        }
     }
 
     public function create(Request $request, Response $response)

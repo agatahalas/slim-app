@@ -44,9 +44,21 @@ class IconAction
         foreach ($icons as $icon) {
             $array_icons[] = $icon->getArrayIcon();
         }
-        $payload = json_encode($array_icons);
-        $response->getBody()->write($payload);
-        return $response->withHeader('Content-Type', 'application/json');
+
+        $path = explode('/', $request->getUri()->getPath());
+
+        if (isset($path[1]) && $path[1] == 'api') {
+            $payload = json_encode($array_icons);
+            $response->getBody()->write($payload);
+            return $response->withHeader('Content-Type', 'application/json');
+        }
+
+        if (isset($path[1]) && $path[1] == 'admin') {
+            return $this->view->render($response, 'table.html', [
+              'title' => 'All Icons',
+              'data' => $array_icons
+            ]);
+        }
     }
 
     public function show(Request $request, Response $response, $args)
