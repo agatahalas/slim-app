@@ -22,14 +22,13 @@ return function (App $app) {
     });
 
     $app->post('/token', 'App\Domain\TokenGenerator:getToken');
-    
 
     $app->group('/users', function (Group $group) {
         $group->get('', ListUsersAction::class);
         $group->get('/{id}', ViewUserAction::class);
     });
 
-    $app->get('/icon/{id}', 'App\Application\Actions\File\FileAction:show');
+    $app->get('/icon/{id}', 'App\Application\Actions\File\FileAction:show') ;
 
     $app->group('/api/icons', function (Group $group) {
         $group->get('', 'App\Application\Actions\Icon\IconAction:index');
