@@ -45,7 +45,7 @@
                         {% for key, value in item %}
                             <td>
                                 {% if key == 'src' %}
-                                    <div style="width: 50px"><img src="/icon/{{ item.id }}" /></div>
+                                    <img src="/icon/{{ item.id }}" width="50" />
                                 {% else %}
                                     {{ value }}
                                 {% endif %}
