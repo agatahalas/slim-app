@@ -6,7 +6,6 @@ use Slim\App;
 use Slim\Views\TwigMiddleware;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Tuupola\Middleware\CorsMiddleware;
-use Gofabian\Negotiation\NegotiationMiddleware;
 use App\Domain\Token;
 
 return function (App $app) {
@@ -31,10 +30,15 @@ return function (App $app) {
         "attribute" => false,
         "secure" => false,
         "relaxed" => [],
-        "error" => function ($response, $arguments) {
-            return $response->withStatus(401);
+        "error" => function ($response, $arguments) use ($app) {
+          $response->withStatus(401);
+          return $app->getContainer()->get('view')->render($response, 'error.html', [
+            'status' => 401,
+            'title' => 'You are not authorized for selected action.',
+            'description' => 'Go to login <a href="/admin">page</a>',
+          ]);
         },
-        "before" => function ($request, $arguments) use ($app) {
+        "before" => function ($request, $arguments) {
             $token = new Token([]);
             $token->populate($arguments["decoded"]);
         }

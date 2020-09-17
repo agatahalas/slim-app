@@ -8,13 +8,12 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
         {% endblock %}
     </head>
-    <body>
-        
+    <body class="d-flex flex-column vh-100">
         {% include 'navigation.html' %}
         <div id="content" class="container-fluid">
             {% block content %}{% endblock %}
         </div>
-        <div id="footer" class="container-fluid mt-5">
+        <div id="footer" class="container-expand mt-auto">
             {% block footer %}
             <div class="border-top p-3">
                 &copy; Copyright {{ "now"|date("Y") }} by CircleK

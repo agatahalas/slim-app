@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Error page{% endblock %}
+{% block content %}
+    <div class="row-fluid">
+        <div class="col text-center">
+            <h1 class="display-2">{{ status }}</h1>
+            <h4>{{ title }}</h4>
+            <h4>{{ description|raw }}</h4>
+        </div>
+    </div>
+{% endblock %}
