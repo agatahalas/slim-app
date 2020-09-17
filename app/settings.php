@@ -11,9 +11,9 @@ return function (ContainerBuilder $containerBuilder) {
             'displayErrorDetails' => true, // Should be set to false in production
             'base_url' => $_ENV['BASE_URL'],
             'JWTauth' => [
-                'secret' => 'FBD2F4C3DD7AE9C94B6B408A62513B58CD4A2AE18002D5CA2D1068F9',
+                'secret' => $_ENV['JWT_SECRET'],
                 'users' => [
-                    'admin' => 'zsZ@aVn6Tq#a\e(',
+                    $_ENV['USER'] => $_ENV['PASS'],
                 ]
             ],
             'logger' => [
@@ -32,10 +32,10 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 'connection' => [
                     'driver'   => 'pdo_mysql',
-                    'host'     => 'database',
-                    'dbname'   => 'lamp',
-                    'user'     => 'lamp',
-                    'password' => 'lamp',
+                    'host'     => $_ENV['DB_HOST'],
+                    'dbname'   => $_ENV['DB_NAME'],
+                    'user'     => $_ENV['DB_USER'],
+                    'password' => $_ENV['DB_PASS'],
                 ],
             ],
         ],
