@@ -46,7 +46,7 @@ return function (ContainerBuilder $containerBuilder) {
         ],
         [
             'view' => function (ContainerInterface $c) {
-                $twig = Twig::create('../templates', ['cache' => false, 'debug' => true]);
+                $twig = Twig::create(__DIR__ . '/../templates', ['cache' => false, 'debug' => true]);
                 $twig->addExtension(new \App\Twig\TwigExtension());
                 return $twig;
             },
