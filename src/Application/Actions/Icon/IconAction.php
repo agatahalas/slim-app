@@ -42,21 +42,22 @@ class IconAction
         $params = $request->getQueryParams();
 
         if (isset($params['category'])) {
-          $category = $this->em->getRepository('App\Entity\Category')->findBy(['machine_name' => $params['category']]);
-          if (empty($category)) {
-            throw new HttpNotFoundException($request, 'No category found with machine_name: ' . $params['category']);
-          }
+            $category = $this->em->getRepository('App\Entity\Category')->findBy(['machine_name' => $params['category']]);
+            if (empty($category)) {
+                throw new HttpNotFoundException($request, 'No category found with machine_name: ' . $params['category']);
+            }
 
-          $category = reset($category);
-          $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['category' => $category->getId()]);
-        }
-        else {
-          $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
+            $category = reset($category);
+            $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['category' => $category->getId()]);
+        } else {
+            $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
         }
 
         $array_icons = [];
         foreach ($icons as $icon) {
-            $array_icons[] = $icon->getArrayIcon();
+            $icon = $icon->getArrayIcon();
+            $icon['url'] = $this->settings['base_url'] . '/icon/' . $icon['id'];
+            $array_icons[] = $icon;
         }
 
         $path = explode('/', $request->getUri()->getPath());
