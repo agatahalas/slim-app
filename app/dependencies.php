@@ -61,7 +61,7 @@ return function (ContainerBuilder $containerBuilder) {
         ],
         [
             'App\Application\Actions\Icon\IconAction' => function ($c) {
-                return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'), $c->get('validator'), $c->get('view'));
+                return new App\Application\Actions\Icon\IconAction($c->get('entity_manager'), $c->get('icon'), $c->get('validator'), $c->get('view'), $c->get('settings'));
             },
             'App\Application\Actions\Category\CategoryAction' => function ($c) {
                 return new App\Application\Actions\Category\CategoryAction($c->get('entity_manager'), $c->get('category'), $c->get('validator'), $c->get('view'));

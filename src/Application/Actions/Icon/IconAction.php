@@ -22,13 +22,15 @@ class IconAction
     private $stringValidator;
     private $srcValidator;
     private $view;
+    private $settings;
 
-    public function __construct(EntityManager $em, Icon $icon, Validator $validator, Twig $view)
+    public function __construct(EntityManager $em, Icon $icon, Validator $validator, Twig $view, array $settings)
     {
         $this->em = $em;
         $this->icon = $icon;
         $this->validator = $validator;
         $this->view = $view;
+        $this->settings = $settings;
 
         $this->numberValidator = $this->validator::number();
         $this->stringValidator = $this->validator::stringType()->notEmpty()->length(1, 64);
@@ -99,23 +101,25 @@ class IconAction
         if (!($icon instanceof Icon)) {
             throw new HttpNotFoundException($request, 'No icon found with id: ' . $args['id']);
         }
-        $payload = json_encode($icon->getArrayIcon());
+        $icon = $icon->getArrayIcon();
+        $icon['url'] = $this->settings['base_url'] . '/icon/' . $icon['id'];
+        $payload = json_encode($icon);
         $response->getBody()->write($payload);
         return $response->withHeader('Content-Type', 'application/json');
     }
 
     public function create(Request $request, Response $response)
     {
-      $categories = $this->em->getRepository('App\Entity\Category')->findAll();
-      $array_categories = [];
-      foreach ($categories as $category) {
-        $array_categories[] = $category->getArrayCategory();
-      }
+        $categories = $this->em->getRepository('App\Entity\Category')->findAll();
+        $array_categories = [];
+        foreach ($categories as $category) {
+            $array_categories[] = $category->getArrayCategory();
+        }
 
-      return $this->view->render($response, 'create-icon.html', [
-        'name' => 'anything',
-        'categories' => $array_categories,
-      ]);
+        return $this->view->render($response, 'create-icon.html', [
+            'name' => 'anything',
+            'categories' => $array_categories,
+        ]);
     }
 
     public function store(Request $request, Response $response)

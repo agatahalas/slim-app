@@ -9,6 +9,7 @@ return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
         'settings' => [
             'displayErrorDetails' => true, // Should be set to false in production
+            'base_url' => $_ENV['BASE_URL'],
             'JWTauth' => [
                 'secret' => 'FBD2F4C3DD7AE9C94B6B408A62513B58CD4A2AE18002D5CA2D1068F9',
                 'users' => [
