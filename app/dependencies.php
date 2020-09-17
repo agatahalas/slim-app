@@ -68,6 +68,9 @@ return function (ContainerBuilder $containerBuilder) {
             },
             'App\Application\Actions\Admin\AdminAction' => function ($c) {
                 return new App\Application\Actions\Admin\AdminAction($c->get('view'), $c->get('entity_manager'));
+            },
+            'App\Application\Actions\File\FileAction' => function ($c) {
+                return new App\Application\Actions\File\FileAction($c->get('entity_manager'));
             }
         ],
         [
