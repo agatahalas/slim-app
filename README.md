@@ -50,3 +50,16 @@ php vendor/bin/doctrine orm:schema-tool:create
  php migrations/CategoriesMigration.php
  - Icons
  php migrations/IconsMigration.php
+
+## Getting data
+### Getting icons
+Getting specific icon with id 50:
+http://slim-app.lndo.site/icon/50
+
+Getting specific icon with different color. You can either use hex code for color or use of one css colors defined - here is the list(https://en.wikipedia.org/wiki/Lists_of_colors) of colors to use, just use its machine name with lowercase:
+http://slim-app.lndo.site/icon/50?color=red
+http://slim-app.lndo.site/icon/50?color=#f00000
+
+Getting list of icons:
+Table: http://slim-app.lndo.site/admin/icons
+JSON: http://slim-app.lndo.site/api/icons

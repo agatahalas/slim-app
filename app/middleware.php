@@ -25,18 +25,19 @@ return function (App $app) {
     );
 
     $app->add(new Tuupola\Middleware\JwtAuthentication([
-        "path" => "/api",
+        "path" => '/api',
+        "ignore" => ['/api/icons'],
         "secret" => $app->getContainer()->get('settings')['JWTauth']['secret'],
         "attribute" => false,
         "secure" => false,
         "relaxed" => [],
         "error" => function ($response, $arguments) use ($app) {
-          $response->withStatus(401);
-          return $app->getContainer()->get('view')->render($response, 'error.html', [
-            'status' => 401,
-            'title' => 'You are not authorized for selected action.',
-            'description' => 'Go to login <a href="/admin">page</a>',
-          ]);
+            $response->withStatus(401);
+            return $app->getContainer()->get('view')->render($response, 'error.html', [
+                'status' => 401,
+                'title' => 'You are not authorized for selected action.',
+                'description' => 'Go to login <a href="/admin">page</a>',
+            ]);
         },
         "before" => function ($request, $arguments) {
             $token = new Token([]);
