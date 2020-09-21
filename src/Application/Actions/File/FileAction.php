@@ -27,10 +27,18 @@ class FileAction
         $icon = $icon->getArrayIcon();
         $params = $request->getQueryParams();
         if (!empty($params['color'])) {
+            $color_replacement = $params['color'];
+            $colors = array_map('str_getcsv', file(__DIR__ . '/lib/colors.csv'));
+            foreach ($colors as $color_key => $color_value) {
+                if ($color_value['0'] == $params['color']) {
+                    $color_replacement = str_replace('#', '', $color_value[2]);
+                }
+            }
+            
             $pattern = '/stroke:#[a-f0-9]{6}/m';
-            $icon['src'] = preg_replace($pattern, 'stroke:#' . $params['color'], $icon['src']);
+            $icon['src'] = preg_replace($pattern, 'stroke:#' . $color_replacement, $icon['src']);
             $pattern = '/fill:#[a-f0-9]{6}/m';
-            $icon['src'] = preg_replace($pattern, 'fill:#' . $params['color'], $icon['src']);
+            $icon['src'] = preg_replace($pattern, 'fill:#' . $color_replacement, $icon['src']);
         }
         $response->getBody()->write($icon['src']);
         return $response->withHeader('Content-Type', 'image/svg+xml');
