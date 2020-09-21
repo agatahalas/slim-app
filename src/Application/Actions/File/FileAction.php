@@ -19,7 +19,6 @@ class FileAction
 
     public function show(Request $request, Response $response, $args)
     {
-        //dd($request->getQueryParams());
         $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
         $icon = reset($icon);
         if (!($icon instanceof Icon)) {
