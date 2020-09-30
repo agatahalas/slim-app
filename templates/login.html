@@ -8,13 +8,13 @@
             $('form').submit(function() {
                 $.ajax({
                     method: "POST",
-                    url: 'http://slim-app.lndo.site/token',
+                    url: "{{ base_url }}" + "/token",
                     username: $("#login").val(),
                     password: $("#pass").val()
                 }).done(function(res) {
                     document.cookie = "token=" + res.token + "; max-age=" + res.expires;
                     $("#error_msg").html("");
-                    document.location='http://slim-app.lndo.site/admin';
+                    document.location="{{ base_url }}" + "/admin";
                 }).fail(function(result) {
                     $("#error_msg").show();
                     $("#error_msg").html("Error logging in: " + result.statusText);
