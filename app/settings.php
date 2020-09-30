@@ -24,7 +24,7 @@ return function (ContainerBuilder $containerBuilder) {
             'doctrine' => [
                 'meta' => [
                     'entity_path' => [
-                        '../app/src/Entity'
+                        __DIR__ . '/../src/Entity'
                     ],
                     'auto_generate_proxies' => true,
                     'proxy_dir' =>  __DIR__ . '/../cache/proxies',
