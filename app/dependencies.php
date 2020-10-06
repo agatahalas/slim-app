@@ -29,19 +29,25 @@ return function (ContainerBuilder $containerBuilder) {
             },
         ],
         [
-        'entity_manager' => function (ContainerInterface $c) {
-            $settings = $c->get('settings');
-            $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
-                $settings['doctrine']['meta']['entity_path'],
-                $settings['doctrine']['meta']['auto_generate_proxies'],
-                $settings['doctrine']['meta']['proxy_dir'],
-                $settings['doctrine']['meta']['cache'],
-                false
-            );
-            return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
-        },
+            'entity_manager' => function (ContainerInterface $c) {
+                $settings = $c->get('settings');
+                $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+                    $settings['doctrine']['meta']['entity_path'],
+                    $settings['doctrine']['meta']['auto_generate_proxies'],
+                    $settings['doctrine']['meta']['proxy_dir'],
+                    $settings['doctrine']['meta']['cache'],
+                    false
+                );
+                return \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
+            },
+        
             'validator' => function (ContainerInterface $c) {
                 return Respect\Validation\Validator::create();
+            },
+        ],
+        [
+            'cache' => function(ContainerInterface $c) {
+                return new \Slim\HttpCache\CacheProvider();
             },
         ],
         [
@@ -70,7 +76,7 @@ return function (ContainerBuilder $containerBuilder) {
                 return new App\Application\Actions\Admin\AdminAction($c->get('view'), $c->get('entity_manager'), $c->get('settings'));
             },
             'App\Application\Actions\File\FileAction' => function ($c) {
-                return new App\Application\Actions\File\FileAction($c->get('entity_manager'));
+                return new App\Application\Actions\File\FileAction($c->get('entity_manager'), $c->get('cache'));
             }
         ],
         [

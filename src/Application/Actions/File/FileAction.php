@@ -7,14 +7,17 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Exception\HttpNotFoundException;
 use App\Entity\Icon;
+use Slim\HttpCache\CacheProvider;
 
 class FileAction
 {
     private $em;
+    private $cache;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $em, CacheProvider $cache)
     {
         $this->em = $em;
+        $this->cache = $cache;
     }
 
     public function show(Request $request, Response $response, $args)
@@ -34,13 +37,17 @@ class FileAction
                     $color_replacement = str_replace('#', '', $color_value[2]);
                 }
             }
-            
+
             $pattern = '/stroke:#[a-f0-9]{6}/m';
             $icon['src'] = preg_replace($pattern, 'stroke:#' . $color_replacement, $icon['src']);
             $pattern = '/fill:#[a-f0-9]{6}/m';
             $icon['src'] = preg_replace($pattern, 'fill:#' . $color_replacement, $icon['src']);
         }
+
         $response->getBody()->write($icon['src']);
-        return $response->withHeader('Content-Type', 'image/svg+xml');
+        $response->withHeader('Content-Type', 'image/svg+xml');
+        $resWithExpire = $this->cache->withExpires($response, time() + 36000);
+
+        return $resWithExpire;
     }
 }
