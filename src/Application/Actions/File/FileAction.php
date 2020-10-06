@@ -45,8 +45,7 @@ class FileAction
         }
 
         $response->getBody()->write($icon['src']);
-        $response->withHeader('Content-Type', 'image/svg+xml');
-        $resWithExpire = $this->cache->withExpires($response, time() + 36000);
+        $resWithExpire = $this->cache->withExpires($response, time() + 36000)->withHeader('Content-Type', 'image/svg+xml');
 
         return $resWithExpire;
     }
