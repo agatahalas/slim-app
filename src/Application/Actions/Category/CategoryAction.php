@@ -20,13 +20,15 @@ class CategoryAction
     private $numberValidator;
     private $stringValidator;
     private $view;
+    private $settings;
 
-    public function __construct(EntityManager $em, Category $category, Validator $validator, Twig $view)
+    public function __construct(EntityManager $em, Category $category, Validator $validator, Twig $view, array $settings)
     {
         $this->em = $em;
         $this->category = $category;
         $this->validator = $validator;
         $this->view = $view;
+        $this->settings = $settings;
 
         $this->numberValidator = $this->validator::number();
         $this->stringValidator = $this->validator::stringType()->notEmpty()->length(1, 64);
@@ -38,7 +40,13 @@ class CategoryAction
 
         $array_categories = [];
         foreach ($categories as $category) {
-            $array_categories[] = $category->getArrayCategory();
+            $category = $category->getArrayCategory();
+            $edit_link = $this->settings['base_url'] . '/admin/categories/' . $category['id'] . '/edit';
+            $delete_link = $this->settings['base_url'] . '/admin/categories/' . $category['id'] . '/delete';
+
+            $category['edit'] = '<a href="' . $edit_link . '"><i class="fas fa-edit"></i></a>';
+            $category['delete'] = '<a href="' . $delete_link . '"><i class="fas fa-trash"></i></a>';
+            $array_categories[] = $category;
         }
 
         $path = explode('/', $request->getUri()->getPath());
@@ -60,8 +68,55 @@ class CategoryAction
 
     public function create(Request $request, Response $response)
     {
-        return $this->view->render($response, 'create-category.html', [
-            'name' => 'anything',
+        return $this->view->render($response, 'form-category.html', [
+            'title' => 'Create category',
+            'action' => '/admin/categories',
+            'method' => 'POST',
+        ]);
+    }
+
+    public function edit(Request $request, Response $response, $args)
+    {
+        if (!$this->numberValidator->validate($args['id'])) {
+            throw new HttpBadRequestException($request, 'The argument must be a number.');
+        }
+
+        $category = $this->em->getRepository('App\Entity\Category')->findBy(['id' => $args['id']]);
+        $category = reset($category);
+        if (!($category instanceof Category)) {
+            throw new HttpNotFoundException($request, 'No category found with id: ' . $args['id']);
+        }
+
+        $category = $category->getArrayCategory();
+
+        return $this->view->render($response, 'form-category.html', [
+            'title' => 'Update category',
+            'category_data' => $category,
+            'action' => '/admin/categories/' . $args['id'],
+            'method' => 'POST',
+        ]);
+    }
+
+    public function remove(Request $request, Response $response, $args)
+    {
+        if (!$this->numberValidator->validate($args['id'])) {
+            throw new HttpBadRequestException($request, 'The argument must be a number.');
+        }
+
+        $category = $this->em->getRepository('App\Entity\Category')->findBy(['id' => $args['id']]);
+        $category = reset($category);
+        if (!($category instanceof Category)) {
+            throw new HttpNotFoundException($request, 'No category found with id: ' . $args['id']);
+        }
+
+        $category = $category->getArrayCategory();
+
+        return $this->view->render($response, 'delete-confirmation.html', [
+            'title' => 'Delete category',
+            'name' => 'category',
+            'data' => $category,
+            'action' => '/admin/categories/' . $args['id'],
+            'method' => 'POST',
         ]);
     }
 

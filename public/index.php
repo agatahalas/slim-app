@@ -7,6 +7,7 @@ use App\Application\ResponseEmitter\ResponseEmitter;
 use DI\ContainerBuilder;
 use Slim\Factory\AppFactory;
 use Slim\Factory\ServerRequestCreatorFactory;
+use Slim\Middleware\MethodOverrideMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -66,6 +67,10 @@ register_shutdown_function($shutdownHandler);
 
 // Add Routing Middleware
 $app->addRoutingMiddleware();
+
+// Add MethodOverride middleware
+$methodOverrideMiddleware = new MethodOverrideMiddleware();
+$app->add($methodOverrideMiddleware);
 
 // Add Error Middleware
 $errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, false, false);

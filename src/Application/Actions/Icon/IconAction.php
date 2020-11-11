@@ -40,6 +40,9 @@ class IconAction
     public function index(Request $request, Response $response, $args)
     {
         $params = $request->getQueryParams();
+        $path = explode('/', $request->getUri()->getPath());
+        $is_admin = (isset($path[1]) && $path[1] == 'admin');
+        $is_api = (isset($path[1]) && $path[1] == 'api');
 
         if (isset($params['category'])) {
             $category = $this->em->getRepository('App\Entity\Category')->findBy(['machine_name' => $params['category']]);
@@ -48,27 +51,45 @@ class IconAction
             }
 
             $category = reset($category);
-            $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['category' => $category->getId()]);
+            if ($is_api) {
+                $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['category' => $category->getId(), 'status' => 1]);
+            } else {
+                $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['category' => $category->getId()]);
+            }
         } else {
-            $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
+            if ($is_api) {
+                $icons = $this->em->getRepository('App\Entity\Icon')->findBy(['status' => 1]);
+            } else {
+                $icons = $this->em->getRepository('App\Entity\Icon')->findAll();
+            }
         }
 
         $array_icons = [];
         foreach ($icons as $icon) {
             $icon = $icon->getArrayIcon();
-            $icon['url'] = $this->settings['base_url'] . '/icon/' . $icon['id'];
+            $icon_url = $this->settings['base_url'] . '/icon/' . $icon['id'];
+
+            if ($is_admin) {
+                $edit_link = $this->settings['base_url'] . '/admin/icons/' . $icon['id'] . '/edit';
+                $delete_link = $this->settings['base_url'] . '/admin/icons/' . $icon['id'] . '/delete';
+
+                $icon['view'] = '<a href="' . $icon_url . '" target="_blank"><i class="fas fa-eye"></i></a>';
+                $icon['edit'] = '<a href="' . $edit_link . '"><i class="fas fa-edit"></i></a>';
+                $icon['delete'] = '<a href="' . $delete_link . '"><i class="fas fa-trash"></i></a>';
+            }
+            elseif ($is_api) {
+                $icon['view'] = $icon_url;
+            }
             $array_icons[] = $icon;
         }
 
-        $path = explode('/', $request->getUri()->getPath());
-
-        if (isset($path[1]) && $path[1] == 'api') {
+        if ($is_api) {
             $payload = json_encode($array_icons);
             $response->getBody()->write($payload);
             return $response->withHeader('Content-Type', 'application/json');
         }
 
-        if (isset($path[1]) && $path[1] == 'admin') {
+        if ($is_admin) {
             foreach ($array_icons as $icon_key => $icon) {
                 $category = $this->em->getRepository('App\Entity\Category')->findBy(['id' => $icon['category']]);
                 $category = reset($category);
@@ -117,9 +138,62 @@ class IconAction
             $array_categories[] = $category->getArrayCategory();
         }
 
-        return $this->view->render($response, 'create-icon.html', [
-            'name' => 'anything',
+        return $this->view->render($response, 'form-icon.html', [
+            'title' => 'Create icon',
             'categories' => $array_categories,
+            'action' => '/admin/icons',
+            'method' => 'POST',
+        ]);
+    }
+
+    public function edit(Request $request, Response $response, $args)
+    {
+        if (!$this->numberValidator->validate($args['id'])) {
+          throw new HttpBadRequestException($request, 'The argument must be a number.');
+        }
+
+        $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
+        $icon = reset($icon);
+        if (!($icon instanceof Icon)) {
+            throw new HttpNotFoundException($request, 'No icon found with id: ' . $args['id']);
+        }
+
+        $icon = $icon->getArrayIcon();
+        $categories = $this->em->getRepository('App\Entity\Category')->findAll();
+        $array_categories = [];
+        foreach ($categories as $category) {
+            $array_categories[] = $category->getArrayCategory();
+        }
+
+        return $this->view->render($response, 'form-icon.html', [
+            'title' => 'Update icon',
+            'categories' => $array_categories,
+            'icon_data' => $icon,
+            'action' => '/admin/icons/' . $args['id'],
+            'method' => 'POST',
+        ]);
+    }
+
+    public function remove(Request $request, Response $response, $args)
+    {
+        if (!$this->numberValidator->validate($args['id'])) {
+            throw new HttpBadRequestException($request, 'The argument must be a number.');
+        }
+
+        $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
+        $icon = reset($icon);
+        if (!($icon instanceof Icon)) {
+            throw new HttpNotFoundException($request, 'No icon found with id: ' . $args['id']);
+        }
+
+        $icon = $icon->getArrayIcon();
+
+        return $this->view->render($response, 'delete-confirmation.html', [
+            'title' => 'Delete icon',
+            'name' => 'icon',
+            'data' => $icon,
+            'action' => '/admin/icons/' . $args['id'],
+            'method' => 'POST',
         ]);
     }
 
@@ -190,7 +264,8 @@ class IconAction
 
         $icon->setName($data['name']);
         $icon->assignToCategory($category);
-        $icon->setStatus($data['status']);
+        $status = !empty($data['status']) ? $data['status'] : '0';
+        $icon->setStatus($status);
         $icon->setSrc($data['src']);
         $this->em->flush();
 

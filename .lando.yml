@@ -2,3 +2,4 @@ name: slim-app
 recipe: lamp
 config:
   webroot: public
+  xdebug: true

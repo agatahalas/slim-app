@@ -25,8 +25,7 @@ return function (App $app) {
     );
 
     $app->add(new Tuupola\Middleware\JwtAuthentication([
-        "path" => '/api',
-        "ignore" => ['/api/icons'],
+        "path" => ['/admin/icons', '/admin/categories'],
         "secret" => $app->getContainer()->get('settings')['JWTauth']['secret'],
         "attribute" => false,
         "secure" => false,

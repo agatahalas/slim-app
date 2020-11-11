@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h3 class="mt-4">{{ title }}</h3>
+    <form action="{{ action }}" method="{{ method }}">
+        <div class="form-group">
+            <p>Are you sure you want to delete the {{ name }} with id {{ data.id }}?</p>
+        </div>
+
+        <input type="hidden" name ="_METHOD" value ="DELETE">
+        <button type="submit" class="btn btn-danger" value="Submit">Yes</button>
+    </form>
+{% endblock %}

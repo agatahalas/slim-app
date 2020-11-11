@@ -35,7 +35,7 @@
             <thead>
                 <tr>
                     {% for key, item in data|first %}
-                        <th scope="col">{{ key }}</th>
+                        <th scope="col">{{ key|upper }}</th>
                     {% endfor %}
                 </tr>
             </thead>
@@ -47,7 +47,7 @@
                                 {% if key == 'src' %}
                                     <img src="/icon/{{ item.id }}" width="50" />
                                 {% else %}
-                                    {{ value }}
+                                    {{ value|raw }}
                                 {% endif %}
                             </td>
                         {% endfor %}
