@@ -78,7 +78,7 @@ class IconAction
                 $icon['delete'] = '<a href="' . $delete_link . '"><i class="fas fa-trash"></i></a>';
             }
             elseif ($is_api) {
-                $icon['view'] = $icon_url;
+                $icon['url'] = $icon_url;
             }
             $array_icons[] = $icon;
         }
