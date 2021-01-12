@@ -46,7 +46,6 @@ class FileAction
 
         $response->getBody()->write($icon['src']);
         $resWithExpire = $this->cache->withExpires($response, time() + 31536000)->withHeader('Content-Type', 'image/svg+xml')->withHeader('Cache-Control', 'max-age=31536000');
-
         return $resWithExpire;
     }
 }

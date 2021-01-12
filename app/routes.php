@@ -28,7 +28,7 @@ return function (App $app) {
         $group->get('/{id}', ViewUserAction::class);
     });
 
-    $app->get('/icon/{id}', 'App\Application\Actions\File\FileAction:show') ;
+    $app->get('/icon/{id}', 'App\Application\Actions\File\FileAction:show');
 
     $app->group('/api/icons', function (Group $group) {
       $group->get('', 'App\Application\Actions\Icon\IconAction:index');

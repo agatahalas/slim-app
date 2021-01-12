@@ -11,7 +11,7 @@ use App\Domain\Token;
 return function (App $app) {
     $app->add(SessionMiddleware::class);
     $app->add(TwigMiddleware::createFromContainer($app));
-    
+
     $app->add(
         new HttpBasicAuthentication([
             "path" => "/token",
@@ -43,7 +43,7 @@ return function (App $app) {
             $token->populate($arguments["decoded"]);
         }
     ]));
-    
+
     $app->add(new CorsMiddleware([
         "origin" => ["*"],
         "methods" => ["GET", "POST", "PUT", "PATCH", "DELETE"],
