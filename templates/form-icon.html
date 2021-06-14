@@ -9,6 +9,10 @@
             <input type="text" class="form-control" id="name" name="name" value="{{ icon_data.name }}"/>
         </div>
         <div class="form-group">
+            <label for="name">SIM icon name</label>
+            <input type="text" class="form-control" id="sim_icon_name" name="sim_icon_name" value="{{ icon_data.sim_icon_name }}"/>
+        </div>
+        <div class="form-group">
             <label for="name">Category</label>
             <select class="form-control" id="category" name="category" size="1">
                 {% for category in categories %}

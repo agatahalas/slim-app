@@ -219,6 +219,7 @@ class IconAction
 
         $this->icon->setName($data['name']);
         $this->icon->assignToCategory($category);
+        $this->icon->setSimIconName($data['sim_icon_name']);
         $status = !empty($data['status']) ? $data['status'] : '0';
         $this->icon->setStatus($status);
         $this->icon->setSrc($data['src']);
@@ -264,6 +265,7 @@ class IconAction
 
         $icon->setName($data['name']);
         $icon->assignToCategory($category);
+        $icon->setSimIconName($data['sim_icon_name']);
         $status = !empty($data['status']) ? $data['status'] : '0';
         $icon->setStatus($status);
         $icon->setSrc($data['src']);

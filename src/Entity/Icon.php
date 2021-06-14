@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Category as Category;
 
@@ -10,124 +9,143 @@ use App\Entity\Category as Category;
  * @ORM\Entity
  * @ORM\Table(name="icon")
  */
-class Icon
-{
-    /**
-     * @ORM\Id
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
+class Icon {
+  /**
+   * @ORM\Id
+   * @ORM\Column(name="id", type="integer")
+   * @ORM\GeneratedValue(strategy="AUTO")
+   */
+  protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    protected $name;
+  /**
+   * @ORM\Column(type="string", length=64)
+   */
+  protected $name;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Category")
-     */
-    protected $category;
+  /**
+   * @ORM\Column(type="string", length=64, name="sim_icon_name", nullable=true)
+   */
+  protected $simIconName;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default":"0"})
-     */
-     protected $status;
+  /**
+   * @ORM\ManyToOne(targetEntity="Category")
+   */
+  protected $category;
 
-    /**
-     * @ORM\Column(type="blob")
-     */
-    protected $src;
+  /**
+   * @ORM\Column(type="boolean", options={"default":"0"})
+   */
+  protected $status;
 
-    /**
-     * Get id.
-     *
-     * @ORM\return integer
-     */
-    public function getId() {
-        return $this->id;
-    }
+  /**
+   * @ORM\Column(type="blob")
+   */
+  protected $src;
 
-    /**
-     * Get name.
-     *
-     * @ORM\return string
-     */
-    public function getName() {
-        return $this->name;
-    }
+  /**
+   * Get id.
+   *
+   * @ORM\return integer
+   */
+  public function getId() {
+    return $this->id;
+  }
 
-    /**
-     * Set name.
-     */
-    public function setName($name) {
-        $this->name = $name;
-    }
+  /**
+   * Get name.
+   *
+   * @ORM\return string
+   */
+  public function getName() {
+    return $this->name;
+  }
 
-    /**
-     * Assign to category.
-     */
-    public function assignToCategory(Category $category)
-    {
-        $this->category = $category;
-    }
+  /**
+   * Set name.
+   */
+  public function setName($name) {
+    $this->name = $name;
+  }
 
-    /**
-     * Get category.
-     *
-     * @ORM\return integer
-     */
-    public function getCategory()
-    {
-        return $this->category;
-    }
+  /**
+   * Get name.
+   *
+   * @ORM\return string
+   */
+  public function getSimIconName() {
+    return $this->simIconName;
+  }
 
-    /**
-     * Get status.
-     *
-     * @ORM\return string
-     */
-    public function getStatus() {
-        return $this->status;
-    }
+  /**
+   * Set name.
+   */
+  public function setSimIconName($sim_icon_name) {
+    $this->simIconName = $sim_icon_name;
+  }
 
-    /**
-     * Set status.
-     */
-    public function setStatus($status) {
-        $this->status = $status;
-    }
+  /**
+   * Assign to category.
+   */
+  public function assignToCategory(Category $category) {
+    $this->category = $category;
+  }
 
-    /**
-     * Get src.
-     *
-     * @ORM\return string
-     */
-     public function getSrc() {
-        return $this->src;
-    }
+  /**
+   * Get category.
+   *
+   * @ORM\return integer
+   */
+  public function getCategory() {
+    return $this->category;
+  }
 
-    /**
-     * Set src.
-     */
-    public function setSrc($src) {
-        $this->src = $src;
-    }
+  /**
+   * Get status.
+   *
+   * @ORM\return string
+   */
+  public function getStatus() {
+    return $this->status;
+  }
+
+  /**
+   * Set status.
+   */
+  public function setStatus($status) {
+    $this->status = $status;
+  }
+
+  /**
+   * Get src.
+   *
+   * @ORM\return string
+   */
+  public function getSrc() {
+    return $this->src;
+  }
+
+  /**
+   * Set src.
+   */
+  public function setSrc($src) {
+    $this->src = $src;
+  }
 
   /**
    * Get array with icon's data.
    *
    * @return array
    */
-    public function getArrayIcon() {
-        $icon = [
-          'id' => $this->getId(),
-          'name' => $this->getName(),
-          'category' => $this->getCategory()->getId(),
-          'status' => $this->getStatus(),
-          'src' => is_resource($this->getSrc()) ? stream_get_contents($this->getSrc()) : $this->getSrc(),
-        ];
-        return $icon;
-    }
+  public function getArrayIcon() {
+    $icon = [
+      'id' => $this->getId(),
+      'name' => $this->getName(),
+      'sim_icon_name' => $this->getSimIconName(),
+      'category' => $this->getCategory()->getId(),
+      'status' => $this->getStatus(),
+      'src' => is_resource($this->getSrc()) ? stream_get_contents($this->getSrc()) : $this->getSrc(),
+    ];
+    return $icon;
+  }
 
 }
