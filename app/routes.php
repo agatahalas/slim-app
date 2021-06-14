@@ -29,6 +29,7 @@ return function (App $app) {
     });
 
     $app->get('/icon/{id}', 'App\Application\Actions\File\FileAction:show');
+    $app->get('/icon/sim-icon/{sim_icon_name}', 'App\Application\Actions\File\FileAction:showBySimIconName');
 
     $app->group('/api/icons', function (Group $group) {
       $group->get('', 'App\Application\Actions\Icon\IconAction:index');
@@ -61,3 +62,4 @@ return function (App $app) {
         $group->get('/logout', 'App\Application\Actions\Admin\AdminAction:logout');
     });
 };
+

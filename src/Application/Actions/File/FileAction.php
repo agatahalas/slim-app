@@ -22,10 +22,18 @@ class FileAction
 
     public function show(Request $request, Response $response, $args)
     {
-        $icon = $this->em->getRepository('App\Entity\Icon')->findBy(['id' => $args['id']]);
+        return $this->getFileIcon($request, $response, $args['id'], 'id');
+    }
+
+    public function showBySimIconName(Request $request, Response $response, $args) {
+        return $this->getFileIcon($request, $response, $args['sim_icon_name'], 'sim_icon_name');
+    }
+
+    private function getFileIcon(Request $request, Response $response, $field_value, $field_name) {
+        $icon = $this->em->getRepository('App\Entity\Icon')->findBy([$field_name => $field_value]);
         $icon = reset($icon);
         if (!($icon instanceof Icon)) {
-            throw new HttpNotFoundException($request, 'No icon found with id: ' . $args['id']);
+            throw new HttpNotFoundException($request, 'No icon found with id: ' . $field_name);
         }
         $icon = $icon->getArrayIcon();
         $params = $request->getQueryParams();

@@ -25,7 +25,7 @@ class Icon {
   /**
    * @ORM\Column(type="string", length=64, name="sim_icon_name", nullable=true)
    */
-  protected $simIconName;
+  protected $sim_icon_name;
 
   /**
    * @ORM\ManyToOne(targetEntity="Category")
@@ -73,14 +73,14 @@ class Icon {
    * @ORM\return string
    */
   public function getSimIconName() {
-    return $this->simIconName;
+    return $this->sim_icon_name;
   }
 
   /**
    * Set name.
    */
   public function setSimIconName($sim_icon_name) {
-    $this->simIconName = $sim_icon_name;
+    $this->sim_icon_name = $sim_icon_name;
   }
 
   /**
