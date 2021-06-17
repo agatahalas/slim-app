@@ -30,6 +30,8 @@ class FileAction
     }
 
     private function getFileIcon(Request $request, Response $response, $field_value, $field_name) {
+        $response = $this->cache->withEtag($response, 'show-icon');
+
         $icon = $this->em->getRepository('App\Entity\Icon')->findBy([$field_name => $field_value]);
         $icon = reset($icon);
         if (!($icon instanceof Icon)) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 use App\Application\Middleware\SessionMiddleware;
 use Slim\App;
+use Slim\HttpCache\Cache;
 use Slim\Views\TwigMiddleware;
 use Tuupola\Middleware\HttpBasicAuthentication;
 use Tuupola\Middleware\CorsMiddleware;
@@ -11,6 +12,8 @@ use App\Domain\Token;
 return function (App $app) {
     $app->add(SessionMiddleware::class);
     $app->add(TwigMiddleware::createFromContainer($app));
+
+    $app->add(new Cache('public', 86400));
 
     $app->add(
         new HttpBasicAuthentication([
